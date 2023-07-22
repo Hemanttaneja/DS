@@ -64,3 +64,30 @@ from cte1
 select cte1.student_id from 
 cte1 inner join
 cte2 on cte1.rnk = cte2.median_value
+
+-- Q - workers with the highest salaries
+-- https://platform.stratascratch.com/coding/10353-workers-with-the-highest-salaries?code_type=3
+
+select
+distinct worker_title
+from
+(select worker_id 
+, worker_title
+, dense_rank() over(order by salary desc) as dns_rnk
+from worker
+inner join title
+on worker.worker_id = title.worker_ref_id) x
+where dns_rnk = 1
+
+-- Q - Salaries differences
+-- https://platform.stratascratch.com/coding/10308-salaries-differences/discussion?code_type=3
+select 
+abs(max(case when department = 'marketing'
+then salary else 0 end) - 
+max(case when department = 'engineering'
+then salary else 0 end)) as salary_difference
+from db_employee
+join db_dept 
+on db_employee.department_id = db_dept.id;
+
+
