@@ -90,4 +90,15 @@ from db_employee
 join db_dept 
 on db_employee.department_id = db_dept.id;
 
+-- Q - Monthly percentage difference
+-- https://platform.stratascratch.com/coding/10319-monthly-percentage-difference/discussion?code_type=3
+select DATE_FORMAT(created_at,'%Y-%m') AS ym
+, round(((sum(value) - lag(sum(value),1) over())/lag(sum(value),1) over())*100,2) as revenue_diff_pct
+from sf_transactions
+group by 1
+order by 1
+
+
+
+
 
